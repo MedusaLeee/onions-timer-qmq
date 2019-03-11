@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: onions-timer-qmq
+  jmx:
+    enabled: false
+logging:
+  level:
+    root: info
+  path: logs/
+  file: onions-timer-qmq.log
