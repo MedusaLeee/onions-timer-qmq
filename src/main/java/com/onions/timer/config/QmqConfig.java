@@ -1,16 +1,17 @@
 package com.onions.timer.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean;
 import qunar.tc.qmq.MessageProducer;
-import qunar.tc.qmq.consumer.annotation.EnableQmq;
 import qunar.tc.qmq.producer.MessageProducerProvider;
 
+@Slf4j
 @Configuration
 @PropertySource("classpath:application.yml")
-@EnableQmq(appCode="${qmq.app-code}", metaServer="${qmq.meta-server-address}/meta/address")
 public class QmqConfig {
 
     @Value("${qmq.app-code}")
@@ -32,9 +33,14 @@ public class QmqConfig {
         producer.setSendTryCount(10);
         return producer;
     }
-//    @QmqConsumer(subject = "your subject", consumerGroup = "group", executor = "your executor bean name")
-//    public void onMessage(Message message){
-//        //process your message
-//        String value = message.getStringProperty("key");
-//    }
+
+    @Bean
+    public ThreadPoolExecutorFactoryBean qmqExecutor() {
+        ThreadPoolExecutorFactoryBean executorFactoryBean = new ThreadPoolExecutorFactoryBean();
+        executorFactoryBean.setCorePoolSize(2);
+        executorFactoryBean.setMaxPoolSize(2);
+        executorFactoryBean.setQueueCapacity(1000);
+        executorFactoryBean.setThreadNamePrefix("qmq-process");
+        return executorFactoryBean;
+    }
 }
