@@ -13,7 +13,7 @@ import qunar.tc.qmq.producer.MessageProducerProvider;
 @Slf4j
 @Configuration
 @PropertySource("classpath:application.yml")
-@EnableQmq(appCode="${qmq.app-code}", metaServer="${qmq.meta-server-address}/meta/address")
+@EnableQmq(appCode = "${qmq.app-code}", metaServer = "${qmq.meta-server-address}/meta/address")
 public class QmqConfig {
 
     @Value("${qmq.app-code}")
@@ -23,7 +23,7 @@ public class QmqConfig {
     String qmqMetaServerAddress;
 
     @Bean
-    public MessageProducer producer(){
+    public MessageProducer producer() {
         MessageProducerProvider producer = new MessageProducerProvider();
         producer.setAppCode(qmqAppCode);
         producer.setMetaServer(qmqMetaServerAddress + "/meta/address");
@@ -39,8 +39,8 @@ public class QmqConfig {
     @Bean
     public ThreadPoolExecutorFactoryBean qmqExecutor() {
         ThreadPoolExecutorFactoryBean executorFactoryBean = new ThreadPoolExecutorFactoryBean();
-        executorFactoryBean.setCorePoolSize(2);
-        executorFactoryBean.setMaxPoolSize(2);
+        executorFactoryBean.setCorePoolSize(5);
+        executorFactoryBean.setMaxPoolSize(10);
         executorFactoryBean.setQueueCapacity(1000);
         executorFactoryBean.setThreadNamePrefix("qmq-process");
         return executorFactoryBean;

@@ -9,6 +9,8 @@ import qunar.tc.qmq.MessageSendStateListener;
 import com.onions.timer.service.QmqService;
 import qunar.tc.qmq.consumer.annotation.QmqConsumer;
 
+import java.util.Date;
+
 @Service
 @Slf4j
 public class QmqServiceImpl implements QmqService {
@@ -34,9 +36,37 @@ public class QmqServiceImpl implements QmqService {
     }
 
     @Override
+    public void sendDelayMessage(String msg, Date date) {
+        Message message = producer.generateMessage("timer");
+        // QMQ提供的Message是key/value的形式
+        message.setProperty("data", msg);
+        message.setProperty("delayDate", date);
+        //指定发送时间
+        message.setDelayTime(date);
+        producer.sendMessage(message, new MessageSendStateListener() {
+            @Override
+            public void onSuccess(Message message) {
+                log.debug("发送定时消息成功：", message);
+            }
+
+            @Override
+            public void onFailed(Message message) {
+                log.error("发送定时消息失败：", message);
+            }
+        });
+    }
+
+    @Override
     @QmqConsumer(subject = "timer", consumerGroup = "timer", executor = "qmqExecutor")
     public void handleMessage(Message message) {
         String value = message.getLargeString("data");
-        log.info("消费消息成功: " + value);
+        Date delayDate = message.getDateProperty("delayDate");
+        if (delayDate == null) {
+            log.info("消费消息成功: " + value + ",时间查：" + 0 + " ms");
+            return;
+        }
+        Date nowDate = new Date();
+        Long diff = nowDate.getTime() - delayDate.getTime();
+        log.info("消费消息成功: " + value + ",时间查：" + diff.intValue() + " ms");
     }
 }
