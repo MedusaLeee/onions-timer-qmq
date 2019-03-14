@@ -7,11 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean;
 import qunar.tc.qmq.MessageProducer;
+import qunar.tc.qmq.consumer.annotation.EnableQmq;
 import qunar.tc.qmq.producer.MessageProducerProvider;
 
 @Slf4j
 @Configuration
 @PropertySource("classpath:application.yml")
+@EnableQmq(appCode="${qmq.app-code}", metaServer="${qmq.meta-server-address}/meta/address")
 public class QmqConfig {
 
     @Value("${qmq.app-code}")

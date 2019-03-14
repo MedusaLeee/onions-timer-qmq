@@ -1,5 +1,5 @@
 qmq:
   app-code: onions-timer
-  meta-server-address: http://140.143.160.111:8080
+  meta-server-address: http://localhost:8080
 server:
   port: 9090

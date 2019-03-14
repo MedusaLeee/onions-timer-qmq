@@ -7,6 +7,7 @@ import qunar.tc.qmq.Message;
 import qunar.tc.qmq.MessageProducer;
 import qunar.tc.qmq.MessageSendStateListener;
 import com.onions.timer.service.QmqService;
+import qunar.tc.qmq.consumer.annotation.QmqConsumer;
 
 @Service
 @Slf4j
@@ -30,5 +31,12 @@ public class QmqServiceImpl implements QmqService {
                 log.error("发送消息失败：", message);
             }
         });
+    }
+
+    @Override
+    @QmqConsumer(subject = "timer", consumerGroup = "timer", executor = "qmqExecutor")
+    public void handleMessage(Message message) {
+        String value = message.getLargeString("data");
+        log.info("消费消息成功: " + value);
     }
 }
