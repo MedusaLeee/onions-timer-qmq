@@ -15,7 +15,7 @@ import java.util.Date;
 @Slf4j
 public class QmqServiceImpl implements QmqService {
     @Autowired
-    MessageProducer producer;
+    private MessageProducer producer;
 
     @Override
     public void sendMessage(String msg) {
