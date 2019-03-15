@@ -62,11 +62,11 @@ public class QmqServiceImpl implements QmqService {
         String value = message.getLargeString("data");
         Date delayDate = message.getDateProperty("delayDate");
         if (delayDate == null) {
-            log.info("消费消息成功: " + value + ",时间查：" + 0 + " ms");
+            log.info("消费成功: " + value + ",diff：0 ms");
             return;
         }
         Date nowDate = new Date();
         Long diff = nowDate.getTime() - delayDate.getTime();
-        log.info("消费消息成功: " + value + ",时间查：" + diff.intValue() + " ms");
+        log.info("消费成功: " + value + ",diff：" + Integer.toString(diff.intValue()) + " ms");
     }
 }

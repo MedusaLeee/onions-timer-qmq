@@ -4,7 +4,7 @@ const Promise = require('bluebird')
 
 const main = async () => {
     const DIFF = 30
-    const BATCH_NUM= 100
+    const BATCH_NUM= 1000
     const format = 'YYYY-MM-DD HH:mm:ss'
     const nowStr = moment().add(DIFF, 's').format(format)
     const url = `http://localhost:9090/delay?time=${nowStr}`
@@ -13,7 +13,7 @@ const main = async () => {
         console.log(url)
         arr.push(url)
     }
-    await Promise.map(arr, async u => axios.get(u), { concurrency: 20 })
+    await Promise.map(arr, async u => axios.get(u), { concurrency: 200 })
 }
 
 main().then()
