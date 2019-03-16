@@ -9,5 +9,7 @@ public interface QmqService {
 
     void sendDelayMessage(String msg, Date date);
 
+    void sendDelayTransMessage(String msg, Date dat);
+
     void handleMessage(Message message);
 }

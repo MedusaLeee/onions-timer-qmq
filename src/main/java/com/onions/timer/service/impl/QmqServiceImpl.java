@@ -57,6 +57,27 @@ public class QmqServiceImpl implements QmqService {
     }
 
     @Override
+    public void sendDelayTransMessage(String msg, Date date) {
+//        Message message = producer.generateMessage("timer");
+//        // QMQ提供的Message是key/value的形式
+//        message.setProperty("data", msg);
+//        message.setProperty("delayDate", date);
+//        //指定发送时间
+//        message.setDelayTime(date);
+//        producer.sendMessage(message, new MessageSendStateListener() {
+//            @Override
+//            public void onSuccess(Message message) {
+//                log.debug("发送定时消息成功：", message);
+//            }
+//
+//            @Override
+//            public void onFailed(Message message) {
+//                log.error("发送定时消息失败：", message);
+//            }
+//        });
+    }
+
+    @Override
     @QmqConsumer(subject = "timer", consumerGroup = "timer", executor = "qmqExecutor")
     public void handleMessage(Message message) {
         String value = message.getLargeString("data");

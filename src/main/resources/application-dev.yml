@@ -14,3 +14,23 @@ server:
     buffer-size: 1024
     # 是否分配的直接内存
     direct-buffers: true
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/qmq
+    username: root
+    password: rootroot
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 20
+      initial-size: 1
+      max-wait: 60000
+      minIdle: 1
+      validationQuery: select 'x'
+      testWhileIdle: true
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
