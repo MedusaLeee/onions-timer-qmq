@@ -33,4 +33,16 @@ public class TimerController {
         qmqService.sendDelayMessage("message index: " + index + ", time: " + time, date);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
+
+    @GetMapping(path = "/trans")
+    public ResponseEntity<String> sendTransDelayMessage(String time, int index) {
+        Date date;
+        try {
+            date = DateUtils.parseDate(time, "yyyy-MM-dd HH:mm:ss");
+        } catch (ParseException e) {
+            return new ResponseEntity<>("日期格式错误", HttpStatus.BAD_REQUEST);
+        }
+        qmqService.sendDelayTransMessage("message index: " + index + ", time: " + time, date);
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
 }

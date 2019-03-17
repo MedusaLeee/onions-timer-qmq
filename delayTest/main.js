@@ -1,7 +1,7 @@
 const axios = require('axios')
 const moment = require('moment')
 const Promise = require('bluebird')
-
+http://localhost:9090/delay?time=2019-03-15 14:06:43&index=9999
 const main = async () => {
     const DIFF = 30
     // 并行数量
