@@ -9,3 +9,5 @@ sleep 1s
 ./delay.sh start
 sleep 1s
 ./watchdog.sh start
+
+brew services start rabbitmq

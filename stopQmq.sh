@@ -9,3 +9,5 @@ sleep 1s
 ./broker.sh stop
 sleep 1s
 ./metaserver.sh stop
+
+brew services stop rabbitmq

@@ -28,7 +28,7 @@ public class QmqConfig {
         producer.setAppCode(qmqAppCode);
         producer.setMetaServer(qmqMetaServerAddress + "/meta/address");
         // 默认每次发送时最大批量大小，默认30
-        producer.setSendBatch(30);
+        producer.setSendBatch(100);
         // 异步发送队列大小
         producer.setMaxQueueSize(10000);
         // 如果消息发送失败，重试次数，默认10
