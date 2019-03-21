@@ -3,7 +3,7 @@ package com.onions.timer.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.onions.timer.dto.MessageDto;
 import com.onions.timer.exception.ParamsInvalidException;
-import com.onions.timer.model.App;
+import com.onions.timer.rabbit.TimerProducer;
 import com.onions.timer.repository.AppRepository;
 import com.onions.timer.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.context.request.async.WebAsyncTask;
 import qunar.tc.qmq.Message;
 import qunar.tc.qmq.MessageProducer;
 import qunar.tc.qmq.MessageSendStateListener;
@@ -32,7 +31,7 @@ public class QmqServiceImpl implements QmqService {
     private MessageProducer producer;
 
     @Autowired
-    private AppRepository appRepository;
+    private TimerProducer timerProducer;
 
     @Override
     public DeferredResult<ResponseEntity<Object>> sendDelayAsyncMessage(MessageDto messageDto) {
@@ -71,14 +70,10 @@ public class QmqServiceImpl implements QmqService {
     @Override
     @QmqConsumer(subject = "timer", consumerGroup = "timer", executor = "qmqExecutor")
     public void handleMessage(Message message) {
-        String value = message.getLargeString("data");
-        Date delayDate = message.getDateProperty("delayDate");
-        if (delayDate == null) {
-            log.info("消费成功: " + value + ",diff：0 ms");
-            return;
-        }
-        Date nowDate = new Date();
-        Long diff = nowDate.getTime() - delayDate.getTime();
-        log.info("消费成功: " + value + ",diff：" + Integer.toString(diff.intValue()) + " ms");
+        String jsonStr = message.getStringProperty("data");
+        MessageDto messageDto = JSON.parseObject(jsonStr, MessageDto.class);
+        Long diff = messageDto.getTime() - System.currentTimeMillis();
+        log.info("消费成功, diff：" + Integer.toString(diff.intValue()) + " ms");
+        timerProducer.send("timer-" + messageDto.getAppId(), jsonStr);
     }
 }

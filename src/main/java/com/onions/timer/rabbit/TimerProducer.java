@@ -22,12 +22,12 @@ public class TimerProducer implements RabbitTemplate.ConfirmCallback, RabbitTemp
         rabbitTemplate.setReturnCallback(this);
     }
 
-    public void send(String message, String jobId) {
-        CorrelationData correlationData = new CorrelationData(jobId);
+    public void send(String queueName, String message) {
+        CorrelationData correlationData = new CorrelationData(message);
         //rabbitTemplate.convertAndSend("timerConsumerQ", message, correlationData);
         MessageProperties messageProperties = new MessageProperties();
         Message messageObj = new Message(message.getBytes(), messageProperties);
-        rabbitTemplate.send("", "qmq-test", messageObj, correlationData);
+        rabbitTemplate.send("", queueName, messageObj, correlationData);
     }
 
     @Override
