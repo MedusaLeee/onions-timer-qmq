@@ -10,14 +10,12 @@ import javax.persistence.*;
 public class App {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "app_id")
     private String appId;
-    @Column(name = "app_secret")
-    private String appSecret;
     @Column(name = "app_name")
-    private String app_name;
+    private String appName;
     @Column(name = "consumer_queue")
     private String consumerQueue;
 

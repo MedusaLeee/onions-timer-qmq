@@ -11,4 +11,6 @@ public interface AppRepository extends BaseRepository<App> {
 
     @Override
     List<App> findAll();
+
+    App findByAppId(String appId);
 }
