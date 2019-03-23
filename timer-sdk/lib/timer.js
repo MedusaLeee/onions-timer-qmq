@@ -8,20 +8,20 @@ const CHECK_APP_ID_PATH = '/timers/check'
 const PUT_MESSAGE_PATH = '/timers'
 
 class OnionTimer {
-    constructor() {
-        this.appId = null
+    constructor(appId) {
+        this.appId = appId
+        this.init()
     }
     // 实例化时检查 appId
-    async init (appId) {
-        this.appId = appId
-        await this.checkAppId()
+    init () {
+        this.checkAppId().then()
     }
     // message为字符串最大 32K
     async sendMessage (message, jobAt) {
         const body = {
             appId: this.appId,
             jobAt,
-            data: message
+            data: JSON.stringify(message)
         }
         try {
             const resp = await httpAgent.post(PUT_MESSAGE_PATH, body)
@@ -52,3 +52,5 @@ class OnionTimer {
         // }
     }
 }
+
+module.exports = OnionTimer
