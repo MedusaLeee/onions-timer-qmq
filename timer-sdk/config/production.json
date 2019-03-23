@@ -1,3 +1,4 @@
 {
-  "timerHttpServerUrl": "http://localhost:9090"
+  "timerHttpServerUrl": "http://localhost:9090",
+  "mqUrl": "amqp://localhost:5672"
 }

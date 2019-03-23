@@ -13,3 +13,8 @@ const DIFF = 30
 const format = 'YYYY-MM-DD HH:mm:ss'
 const jobAt = moment().add(DIFF, 's').format(format)
 timer.sendMessage(message, jobAt).then()
+timer.consume(async (msg, ack) => {
+    const message = JSON.parse(msg.content.toString())
+    console.log('收到消息：', message)
+    ack(msg)
+})

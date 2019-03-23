@@ -1,3 +1,5 @@
+const _ = require('lodash')
+const mq = require('./mq')
 const config = require('config')
 const httpUtil = require('./httpUtil')
 
@@ -10,6 +12,7 @@ const PUT_MESSAGE_PATH = '/timers'
 class OnionTimer {
     constructor(appId) {
         this.appId = appId
+        this.mqName = `timer-${appId}`
         this.init()
     }
     // 实例化时检查 appId
@@ -50,6 +53,21 @@ class OnionTimer {
         // } catch (e) {
         //     throw new Error('OnionTimer server error...')
         // }
+    }
+    consume (handler, prefetch = 5) {
+        if (typeof handler !== 'function') {
+            throw new Error('handler is not a function')
+        }
+        if (!_.isInteger(prefetch)) {
+            throw new Error('prefetch type is not int')
+        }
+        const mqName = this.mqName
+        mq.getMqChannel().then(channel => {
+            channel.prefetch(prefetch)
+            channel.consume(mqName, async (msg) => {
+                await handler(msg, channel.ack.bind(channel))
+            }, { noAck: false })
+        })
     }
 }
 
