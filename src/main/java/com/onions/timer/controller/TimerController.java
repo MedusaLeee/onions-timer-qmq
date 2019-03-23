@@ -32,7 +32,7 @@ public class TimerController {
 //        }
 //        return qmqService.sendDelayAsyncMessage("message index: " + index + ", time: " + time, date);
 //    }
-    @PostMapping(path = "/messages")
+    @PostMapping(path = "/timers")
     public DeferredResult<ResponseEntity<Object>> addDelayMessage(@RequestBody MessageDto messageDto) {
         return qmqService.sendDelayAsyncMessage(messageDto);
     }
