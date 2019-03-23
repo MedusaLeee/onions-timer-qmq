@@ -92,5 +92,5 @@ Temporary Items
 mvnw
 mvnw.cmd
 .mvn
-delayTest/package-lock.json
-delayTest/node_modules
+*/package-lock.json
+*/node_modules
