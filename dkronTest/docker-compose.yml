@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  dkron:
+    image: dkron/dkron:latest
+    networks:
+      - dkron-demo
+    ports:
+      - "8080:8080"
+    command: "agent --server"
+
+  koa:
+    build: .
+    command: node app.js
+    networks:
+      - dkron-demo
+    ports:
+      - "9090:9090"
+    volumes:
+      - .:/opt/app
+    depends_on:
+      - dkron
+networks:
+  dkron-demo:
