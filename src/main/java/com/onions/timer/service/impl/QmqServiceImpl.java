@@ -72,7 +72,7 @@ public class QmqServiceImpl implements QmqService {
     public void handleMessage(Message message) {
         String jsonStr = message.getStringProperty("data");
         MessageDto messageDto = JSON.parseObject(jsonStr, MessageDto.class);
-        Long diff = messageDto.getTime() - System.currentTimeMillis();
+        Long diff = System.currentTimeMillis() - messageDto.getTime();
         log.info("消费成功, diff：" + Integer.toString(diff.intValue()) + " ms");
         timerProducer.send("timer-" + messageDto.getAppId(), jsonStr);
     }
