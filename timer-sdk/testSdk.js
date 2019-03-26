@@ -17,4 +17,4 @@ timer.consume(async (msg, ack) => {
     const message = JSON.parse(msg.content.toString())
     console.log('收到消息：', message)
     ack(msg)
-})
+}, 50)
